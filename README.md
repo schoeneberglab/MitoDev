@@ -26,6 +26,7 @@ Clone the repository:
 git clone git@github.com:schoeneberglab/MitoDev.git
 cd MitoDev
 ```
+---
 
 ## 📁 Repository Structure
 .
