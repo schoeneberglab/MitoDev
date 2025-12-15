@@ -1,0 +1,20 @@
+data:
+  root_dir: ./data
+  save_dir: ./data
+  num_frames: 10 # 60 for full dataset; set to 10 for testing
+
+tracking:
+  zstacks: [10, 40, 70, 100, 130, 160, 190, 220]
+  min_z_len: 20
+
+cell_smoothing:
+  z_window: 5
+  sigma: 7
+
+resume:
+  flag: False
+
+debug:  # applies just for cell filling; tracking is done on all cells and frames
+  flag: False
+  cell_labels: [110]
+  frame_range: [0, 30] # [start_frame, end_frame]
