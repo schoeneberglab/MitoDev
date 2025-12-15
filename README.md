@@ -2,19 +2,29 @@
 
 This repository contains the code for the paper **production-ready pipeline**:
 
-* Downloading microscopy data
+* Downloading a sample data
 * Segmenting cells using **Cellpose**
 * Running mitochondrial tracking
 * Generating **per-cell MIP videos**
 * Visualizing all cells in a **HTML dashboard**
 
-Some stages are **computationally expensive** and may take **hours to complete**, depending on dataset size and hardware.
+The included dataset is intentionally small for demonstration purposes: tracking is run on 10 frames instead of 60, and the number of extracted cells is limited to 10. For full-scale datasets, several pipeline stages are computationally intensive and may take hours to complete, depending on dataset size and hardware.
+
+
+Here’s an example of MitoDev output in action:
+
+![MitoDev Demo](cell_gallery/mitodev.gif)
 
 ---
 
-## 📁 Repository Structure
-
+## Getting Started
+Clone the repository:
+```bash
+git clone git@github.com:schoeneberglab/MitoDev.git
+cd MitoDev
 ```
+
+## 📁 Repository Structure
 .
 ├── config.yaml
 ├── main.py
@@ -32,11 +42,35 @@ Some stages are **computationally expensive** and may take **hours to complete**
 
 ### 1️⃣ Install `uv`
 
-`uv` is used for fast Python environment and dependency management.
+`uv` is used for fast, reproducible Python environment and dependency management.
+
+#### macOS (recommended via Homebrew)
 
 ```bash
-pip install uv
+brew install uv
 ```
+
+#### Linux (and macOS without Homebrew)
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+After installation, restart your shell or run:
+
+```bash
+source ~/.bashrc
+# or
+source ~/.zshrc
+```
+
+Verify installation:
+
+```bash
+uv --version
+```
+
+> **Note:** `uv` installs to `~/.cargo/bin` by default. Ensure this directory is in your `PATH`.
 
 ---
 
@@ -59,7 +93,6 @@ This will:
 ```bash
 source .mitodev/bin/activate
 ```
-
 ---
 
 ## 📥 Data Download
@@ -73,7 +106,7 @@ bash scripts/download.sh ./data
 ⏱ **Runtime**:
 
 * Depends on network speed
-* Can take several minutes for large datasets
+* Can take several minutes
 
 ---
 
@@ -93,7 +126,7 @@ Arguments:
 
 ⏱ **Runtime**:
 
-* **Can take hours** for large datasets
+* **Can take hours**
 * Strongly recommended to run on a machine with GPU support
 
 ---
