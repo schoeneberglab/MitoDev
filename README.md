@@ -13,7 +13,7 @@ The included dataset is intentionally small for demonstration purposes: tracking
 
 Here’s an example of MitoDev output in action:
 
-![MitoDev Demo](cell_gallery/mitodev.gif)
+<img src="cell_gallery/mitodev.gif" alt="MitoDev Demo" style="width:100%;"/>
 
 ---
 
