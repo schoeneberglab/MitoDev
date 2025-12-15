@@ -29,6 +29,8 @@ cd MitoDev
 ---
 
 ## 📁 Repository Structure
+
+```
 .
 ├── config.yaml
 ├── main.py
@@ -38,7 +40,7 @@ cd MitoDev
 │   ├── run_cellpose.sh
 ├── data/
 ├── README.md
-
+```
 
 ---
 
