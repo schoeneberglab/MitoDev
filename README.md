@@ -1,4 +1,4 @@
-# MitoDev – 4D Cell Segmentation and Tracking
+# MitoDev – Repo for the 4D Cell Segmentation and Tracking Part
 
 This repository contains the code for the paper **production-ready pipeline**:
 
@@ -13,7 +13,10 @@ The included dataset is intentionally small for demonstration purposes: tracking
 
 Here’s an example of MitoDev output in action:
 
-<img src="cell_gallery/mitodev.gif" alt="MitoDev Demo" style="width:100%;"/>
+<div align="center">
+  <img src="cell_gallery/mitodev.gif" alt="MitoDev Demo" width="800"/>
+</div>
+
 
 ---
 
