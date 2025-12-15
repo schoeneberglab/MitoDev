@@ -38,7 +38,7 @@ cd MitoDev
 │   ├── run_cellpose.sh
 ├── data/
 ├── README.md
-```
+
 
 ---
 
