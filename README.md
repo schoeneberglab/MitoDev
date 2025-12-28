@@ -190,7 +190,7 @@ You can open this file **on any system**, even without access to the data or Pyt
 | Task          | Recommendation           |
 | ------------- | ------------------------ |
 | Cellpose      | GPU strongly recommended |
-| Main pipeline | GPU + high RAM           |
+| Main pipeline | CPU (high RAM)           |
 | Visualization | CPU sufficient           |
 
 ---
