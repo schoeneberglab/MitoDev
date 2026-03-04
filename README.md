@@ -197,7 +197,7 @@ You can open this file **on any system**, even without access to the data or Pyt
 ## Notes
 
 * Some pipeline stages are **long-running** by nature.
-* The makefile downloads Cellpose 2.2.3, which was used to build the pipeline. However the latest stable version of CellPose (currently CellPose SAM). Both versions are compatible with this pipeline.
+* The makefile downloads Cellpose 2.2.3, which was used to build the pipeline. However the latest stable version of CellPose is currently CellPose SAM. Both versions are compatible with this pipeline.
 
 ---
 
