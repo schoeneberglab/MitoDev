@@ -1,10 +1,14 @@
 VENV := .mitodev
+# Use the system's python 3.10 or fallback to python3
+PYTHON := $(shell which python3.10 || which python3)
 
 .PHONY: venv clean
 
 venv:
-	uv python install 3.10
-	uv venv $(VENV) --python 3.10
+	@echo "Using Python from: $(PYTHON)"
+	# Create the venv using the existing system python
+	uv venv $(VENV) --python $(PYTHON)
+	# Install packages
 	. $(VENV)/bin/activate && \
 	uv pip install \
 		numpy \
@@ -13,7 +17,7 @@ venv:
 		scikit-learn \
 		matplotlib \
 		pandas \
-		cellpose \
+		cellpose==2.2.3 \
 		open3d \
 		imageio[ffmpeg] \
 		gdown

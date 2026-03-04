@@ -805,7 +805,8 @@ def save_cells(
             z_size = int(max_z - min_z) + 1
             x_size = int(max_x - min_x) + 1
             y_size = int(max_y - min_y) + 1
-            cell_volume = np.zeros((z_size, x_size, y_size), dtype=np.float16)
+            # Use (z, y, x) ordering so indexing matches img_mito[z, y, x]
+            cell_volume = np.zeros((z_size, y_size, x_size), dtype=np.float16)
             
             cell_points = cell_over_time[frame]
 
@@ -827,8 +828,8 @@ def save_cells(
                     int(xi) < img_mito.shape[1] and
                     int(yi) < img_mito.shape[2]):
                     try:
-                        cell_volume[z_idx, x_idx, y_idx] = img_mito[
-                            img_z_idx, int(xi), int(yi)
+                        cell_volume[z_idx, y_idx, x_idx] = img_mito[
+                            img_z_idx, int(yi), int(xi)
                         ]
                     except (IndexError, ValueError) as e:
                         print(f'Warning: Error accessing point {point_idx} in frame {frame}: {e}')
@@ -849,9 +850,17 @@ def save_cells(
                 save_root_dir, 'tracked_cells_smooth',
                 f'cell_{cell_label}', 'mitograph', f'frame_{frame}'
             )
-            os.makedirs(save_dir, exist_ok=True)
-            save_path = osp.join(save_dir, f'frame_{frame}.tif')
-            skimage.io.imsave(save_path, sc.astype(np.uint8))
+  
+            # Convert to uint8 first as you intended
+            image_to_save = sc.astype(np.uint8)
+
+            # Check contrast: returns True if the image is low contrast
+            if not skimage.exposure.is_low_contrast(image_to_save):
+                os.makedirs(save_dir, exist_ok=True)
+                save_path = osp.join(save_dir, f'frame_{frame}.tif')
+                skimage.io.imsave(save_path, image_to_save)
+            else:
+                print(f"Skipping {cell_label}: Low contrast detected.")
 
 
 # Backward compatibility: alias for renamed function

@@ -1,6 +1,6 @@
-# MitoDev – Repo for the 4D Cell Segmentation and Tracking Part
+# 4D Cell Segmentation and Tracking
 
-This repository contains the code for the paper **production-ready pipeline**:
+This repository contains the code for the paper **4D mitochondrial network assumes distinct and predictive phenotypes through human lung and intestinal epithelial development** by G. McMahon et al. [available on biorxiv](https://www.biorxiv.org/content/10.1101/2025.04.09.648043v1). It includes:
 
 * Downloading a sample data
 * Segmenting cells using **Cellpose**
@@ -11,10 +11,10 @@ This repository contains the code for the paper **production-ready pipeline**:
 The included dataset is intentionally small for demonstration purposes: tracking is run on 10 frames instead of 60, and the number of extracted cells is limited to 10. For full-scale datasets, several pipeline stages are computationally intensive and may take hours to complete, depending on dataset size and hardware.
 
 
-Here’s an example of MitoDev output in action:
+Here’s an example of the pipeline's output in action. Running the included sample dataset will provide this output:
 
 <div align="center">
-  <img src="cell_gallery/mitodev.gif" alt="MitoDev Demo" width="800"/>
+  <img src="cell_gallery/mitodev.gif" alt="Pipeline Demo" width="800"/>
 </div>
 
 
@@ -28,7 +28,7 @@ cd MitoDev
 ```
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 .
@@ -44,9 +44,9 @@ cd MitoDev
 
 ---
 
-## ⚙️ Environment Setup
+## Environment Setup
 
-### 1️⃣ Install `uv`
+### 1. Install `uv`
 
 `uv` is used for fast, reproducible Python environment and dependency management.
 
@@ -80,7 +80,7 @@ uv --version
 
 ---
 
-### 2️⃣ Create Virtual Environment
+### 2. Create Virtual Environment
 
 ```bash
 make venv
@@ -94,14 +94,14 @@ This will:
 
 ---
 
-### 3️⃣ Activate Environment
+### 3. Activate Environment
 
 ```bash
 source .mitodev/bin/activate
 ```
 ---
 
-## 📥 Data Download
+## Data Download
 
 Download the raw dataset into the `data/` directory:
 
@@ -109,14 +109,14 @@ Download the raw dataset into the `data/` directory:
 bash scripts/download.sh ./data
 ```
 
-⏱ **Runtime**:
+**Runtime**:
 
 * Depends on network speed
 * Can take several minutes
 
 ---
 
-## 🧠 Cell Segmentation (Cellpose)
+## Cell Segmentation (Cellpose)
 
 Run Cellpose on the processed data directory:
 
@@ -130,19 +130,19 @@ Arguments:
 * **Start index**
 * **End index (exclusive)**
 
-⏱ **Runtime**:
+**Runtime**:
 
 * **Can take hours**
 * Strongly recommended to run on a machine with GPU support
 
 ---
 
-## 🧬 Mitochondrial Tracking
+## Mitochondrial Tracking
 
 Run the main processing pipeline:
 
 ```bash
-python -m main ./config.yaml "20231221 Gillian Lung Organoid/Sample 2" 1 --minimal
+python -m main ./config.yaml "20231221 Gillian Lung Organoid/Sample 1" 1 --minimal
 ```
 
 Arguments:
@@ -152,7 +152,7 @@ Arguments:
 * Sample index
 * `--minimal`: Runs a reduced output version (recommended for testing)
 
-⏱ **Runtime**:
+**Runtime**:
 
 * **Several hours** depending on:
 
@@ -161,7 +161,7 @@ Arguments:
 
 ---
 
-## 🎥 Cell Visualization (MIP Videos → HTML)
+## Cell Visualization (MIP Videos → HTML)
 
 Generate **per-cell MIP videos** and embed them into a **self-contained HTML page**:
 
@@ -171,11 +171,10 @@ python visualise_in_html.py --root "./data/20231221 Gillian Lung Organoid/Sample
 
 This will:
 
-* Traverse all tracked cells
-* Generate MIP MP4 videos
+* Generate MIP (along the z-axis) MP4 videos for all tracked cells
 * Embed all videos directly into an HTML file
 
-📄 Output:
+Output:
 
 ```
 index_embedded.html
@@ -185,7 +184,7 @@ You can open this file **on any system**, even without access to the data or Pyt
 
 ---
 
-## 🖥️ Hardware Recommendations
+## Hardware Recommendations
 
 | Task          | Recommendation           |
 | ------------- | ------------------------ |
@@ -195,14 +194,15 @@ You can open this file **on any system**, even without access to the data or Pyt
 
 ---
 
-## ⚠️ Notes
+## Notes
 
-* Some pipeline stages are **long-running** by design
+* Some pipeline stages are **long-running** by nature.
+* The makefile downloads Cellpose 2.2.3, which was used to build the pipeline. However the latest stable version of CellPose (currently CellPose SAM). Both versions are compatible with this pipeline.
 
 ---
 
-## 📬 Contact
+## Contact
 
-For issues, improvements, or extensions, please open a GitHub issue or contact the maintainers.
+For issues, improvements, or extensions, please open a GitHub issue or contact <gmcmahon@ucsd.edu>.
 
 ---

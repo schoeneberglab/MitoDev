@@ -67,7 +67,19 @@ def normalize_to_uint8(video):
         video = (video - vmin) / (vmax - vmin)
     else:
         video = np.zeros_like(video)
-    return (video * 255).astype(np.uint8)
+    video_u8 = (video * 255).astype(np.uint8)
+
+    # Pad to even dimensions (libx264 requirement)
+    h, w = video_u8.shape[1], video_u8.shape[2]
+    h_padded = h if h % 2 == 0 else h + 1
+    w_padded = w if w % 2 == 0 else w + 1
+    
+    if h_padded != h or w_padded != w:
+        video_padded = np.zeros((video_u8.shape[0], h_padded, w_padded), dtype=np.uint8)
+        video_padded[:, :h, :w] = video_u8
+        return video_padded
+    
+    return video_u8
 
 
 def save_mp4(video, path, fps):
@@ -79,6 +91,7 @@ def save_mp4(video, path, fps):
         format="ffmpeg",
         codec="libx264",
         pixelformat="yuv420p",
+        macro_block_size=1,  # Allow any frame size
     )
 
     for frame in video_u8:
@@ -157,12 +170,12 @@ h3 {
 """
         )
 
-        for cell_id, mp4_path in entries:
+        for label, mp4_path in entries:
             b64 = file_to_base64(mp4_path)
             f.write(
                 f"""
 <div class="card">
-  <h3>{cell_id}</h3>
+  <h3>cell {label}</h3>
   <video loop muted playsinline preload="metadata">
     <source src="data:video/mp4;base64,{b64}" type="video/mp4">
     Your browser does not support the video tag.
@@ -203,8 +216,8 @@ def main():
     root_dir = osp.abspath(args.root)
     tracked_dir = osp.join(root_dir, "tracked_cells_smooth")
 
-    print(f"\n🔍 Root: {root_dir}")
-    print(f"🔍 Scanning: {tracked_dir}")
+    print(f"\nRoot: {root_dir}")
+    print(f"Scanning: {tracked_dir}")
 
     if not osp.isdir(tracked_dir):
         raise FileNotFoundError("tracked_cells_smooth not found")
@@ -216,8 +229,11 @@ def main():
     cell_dirs = sorted(glob(osp.join(tracked_dir, "cell_*")))
     if len(cell_dirs) == 0:
         raise RuntimeError("No cell_* directories found")
+    
+    # Sort cell_dirs numerically by the label
+    cell_dirs = sorted(cell_dirs, key=lambda x: float(osp.basename(x).split('_')[1]))
 
-    print(f"✅ Found {len(cell_dirs)} cells\n")
+    print(f"Found {len(cell_dirs)} cells\n")
 
     entries = []
     processed = 0
@@ -225,10 +241,11 @@ def main():
 
     for cell_dir in tqdm(cell_dirs, desc="Processing cells", unit="cell"):
         cell_id = osp.basename(cell_dir)
+        label = int(float(cell_id.split('_')[1]))  # Extract as integer, e.g., 10.0 -> 10
 
         imgs = load_cell_frames(cell_dir)
         if len(imgs) == 0:
-            tqdm.write(f"⚠️  {cell_id}: no frames, skipping")
+            tqdm.write(f"{cell_id}: no frames, skipping")
             skipped += 1
             continue
 
@@ -237,15 +254,15 @@ def main():
         mp4_path = osp.join(mp4_dir, f"{cell_id}.mp4")
         save_mp4(mip_vid, mp4_path, args.fps)
 
-        entries.append((cell_id, mp4_path))
+        entries.append((label, mp4_path))
         processed += 1
 
     html_path = write_embedded_html(entries, out_dir)
 
-    print("\n🎉 Done!")
-    print(f"✅ Cells processed: {processed}")
-    print(f"⚠️  Cells skipped: {skipped}")
-    print(f"🌐 Open anywhere: {html_path}")
+    print("\nDone!")
+    print(f"Cells processed: {processed}")
+    print(f"Cells skipped: {skipped}")
+    print(f"Open anywhere: {html_path}")
 
 
 if __name__ == "__main__":
