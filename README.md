@@ -226,7 +226,7 @@ browse all contents
 │   │   │   │   │   │   │   │   ├── analysis/                # Single cell analysis output
 │   │   │   │   │   │   │   │   ├── mitograph/               # Per frame; tif input and Mitograph output
 │   │   │   │   │   │   │   │   ├── mitotnt/                 # MitoTNT output
-
+```
 | Cell Type | Dataset |
 | :--- | :--- |
 | **Stem cells - D0** | 20240117-3, 20250225-3, 20250226-3 |
