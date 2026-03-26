@@ -103,7 +103,7 @@ source .mitodev/bin/activate
 
 ## Data Download
 
-Download the raw dataset into the `data/` directory:
+Download the example raw dataset into the `data/` directory:
 
 ```bash
 bash scripts/download.sh ./data
@@ -113,6 +113,9 @@ bash scripts/download.sh ./data
 
 * Depends on network speed
 * Can take several minutes
+
+**Data Access**:
+All data from the paper (full movies and segmented single cell movies) is currently hosted on [Amazon S3](https://schoeneberg-lab-public-data-mcmahon-et-al.s3.amazonaws.com/index.html). This data is very large and takes a long time to download, so we recommend first working with the provided example dataset. See the [S3 Folder Structure](#s3-folder-structure) section below for a breakdown of directory organization for the full data.
 
 ---
 
@@ -198,6 +201,42 @@ You can open this file **on any system**, even without access to the data or Pyt
 
 * Some pipeline stages are **long-running** by nature.
 * The makefile downloads Cellpose 2.2.3, which was used to build the pipeline. However the latest stable version of CellPose is currently CellPose SAM. Both versions are compatible with this pipeline.
+
+---
+
+## S3 Folder Structure
+
+The data is currently hosted on [Amazon S3](https://schoeneberg-lab-public-data-mcmahon-et-al.s3.amazonaws.com/index.html) and organized by imaging date ('YYYYMMDD') and sample number ('-X'), as described below. Within each sample multiple regions were imaged. Use the table to find data for specific developmental stages and cell types.
+For access to helper scripts such as visualization and data compilation please contact <gmcmahon@ucsd.edu>.
+
+The S3 bucket follows this hierarchical organization:
+```text
+browse all contents
+├── data/                                                    # Full movies
+│   ├── Imaging date: YYYYMMDD*/
+│   │   ├── Sample number: X/
+│   │   │   ├── Region number: Y/
+│   ├── single_cells/                                        # Single cell movies
+│   │   ├── Imaging date: YYYYMMDD*/
+│   │   │   ├── Sample number: X/
+│   │   │   │   ├── Region number: Y/
+│   │   │   │   │   ├── tracked_cells_smooth/
+│   │   │   │   │   │   ├── yes_cells_TNTd/
+│   │   │   │   │   │   │   ├── cell_*_date-sample-region/   # Unique cell label
+│   │   │   │   │   │   │   │   ├── analysis/                # Single cell analysis output
+│   │   │   │   │   │   │   │   ├── mitograph/               # Per frame; tif input and Mitograph output
+│   │   │   │   │   │   │   │   ├── mitotnt/                 # MitoTNT output
+
+| Cell Type | Dataset |
+| :--- | :--- |
+| **Stem cells - D0** | 20240117-3, 20250225-3, 20250226-3 |
+| **Lung DE** | 20240118-1, 20240119-2, 20250225-1, 20250225-2, 20250226-1, 20250226-2 |
+| **Early BLO** | 20240221-2, 20240222-2, 20240223-2, 20240226-1 |
+| **Early NKX2-1+ BLO** | 20231220-1, 20231220-2, 20231221-1 |
+| **Mature NKX2-1+ BLO** | 20240221-1, 20240222-1 |
+| **Intestine DE** | 20240118-2, 20240119-1 |
+| **Intestine P4** | 20231221-2, 20221222-1 |
+| **Intestine P5** | 20240117-1, 20240117-2, 20240116-1 |
 
 ---
 
